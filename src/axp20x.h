@@ -564,7 +564,31 @@ typedef enum {
 typedef uint8_t (*axp_com_fptr_t)(uint8_t dev_addr, uint8_t reg_addr, uint8_t *data, uint8_t len);
 
 
-class AXP20X_Class
+/**
+ * A common baseclass for any component that can provide a battery charge level
+ */
+class HasBatteryLevel {
+public:
+  /**
+   * Battery state of charge, from 0 to 100 or -1 for unknown
+   */
+  virtual int getBattPercentage() { return -1; }
+
+  /**
+   * The raw voltage of the battery or NAN if unknown
+   */
+  virtual float getBattVoltage() { return NAN; }
+
+  /**
+   * return true if there is a battery installed in this unit
+   */
+  virtual bool isBatteryConnect() { return false; }
+
+  virtual bool isVBUSPlug() { return false; }
+  virtual bool isChargeing() { return false; }
+};
+
+class AXP20X_Class : public HasBatteryLevel
 {
 public:
     int begin(TwoWire &port = Wire, uint8_t addr = AXP202_SLAVE_ADDRESS, bool isAxp173 = false);
