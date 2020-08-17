@@ -578,6 +578,14 @@ public:
    * The raw voltage of the battery or NAN if unknown
    */
   virtual float getBattVoltage() { return NAN; }
+
+  /**
+   * return true if there is a battery installed in this unit
+   */
+  virtual bool isBatteryConnect() { return false; }
+
+  virtual bool isVBUSPlug() { return false; }
+  virtual bool isChargeing() { return false; }
 };
 
 class AXP20X_Class : public HasBatteryLevel
